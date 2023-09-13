@@ -1,0 +1,10 @@
+#/bin/sh
+
+clear
+
+sudo docker stop `sudo docker ps | grep 'blackvoidclub/midnight-commander' | awk '{print $1}'`
+sudo docker stop `sudo docker ps | grep 'bitnami/opencart' | awk '{print $1}'`
+sudo docker stop `sudo docker ps | grep 'bitnami/mariadb' | awk '{print $1}'`
+
+sudo service nginx stop
+sudo docker-compose up

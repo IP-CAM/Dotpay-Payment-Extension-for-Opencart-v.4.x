@@ -1,0 +1,15 @@
+#!/bin/sh
+
+#sudo docker ps
+#exit
+P=`sudo docker ps | grep '8080/tcp' | awk '{print $1}'`
+#P=`sudo docker ps | grep 'blackvoidclub/midnight-commander' | awk '{print $1}'`
+sudo docker exec -it ${P} /bin/bash
+
+exit
+
+CONTAINER ID   IMAGE                  COMMAND                  CREATED          STATUS          PORTS                                                                            NAMES
+f4c5853f7439   bitnami/opencart:4     "/opt/bitnami/script…"   14 minutes ago   Up 14 minutes   0.0.0.0:80->8080/tcp, :::80->8080/tcp, 0.0.0.0:443->8443/tcp, :::443->8443/tcp   docker_opencart_1
+c6bdad82730a   bitnami/mariadb:10.6   "/opt/bitnami/script…"   14 minutes ago   Up 14 minutes   3306/
+
+sudo docker exec -it f4c5853f7439 /bin/bash
