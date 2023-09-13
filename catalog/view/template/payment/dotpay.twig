@@ -1,0 +1,76 @@
+<form action="{{ action }}" method="post" class="form-horizontal">
+  <input type="hidden" name="price" value="{{ price }}" />
+<!--  <input type="hidden" name="key" value="{{ key }}" />  -->
+  <div class="form-group">
+      <label class="col-sm-10 control-label" >{{ text_wallet }}</label>
+
+    <input type="button" value="{{ text_button_find }}" class="btn btn-primary" onclick='wallet_start()' />
+
+      <div class="col-sm-2" style='width:90%; margin-bottom:10px;'>
+          <select class="form-control" id="WalletID" name="WalletID"></select>
+
+    <div id='dotpay_console'></div>
+
+      </div>
+  </div>
+  <input type="hidden" name="OrderID" value="{{ OrderID }}" />
+  <input type="hidden" name="currency" value="{{ currency }}" />
+  <div class="buttons">
+    <div class="float-end">
+      <input type="submit" value="{{ button_confirm }}" class="btn btn-primary" />
+    </div>
+
+  </div>
+</form>
+
+<script>
+
+LLOADS={
+    LOADES: {},
+
+    LOADS: function(u,f,err,sync) { if(typeof(u)=='string') u=[u];
+        var s;
+	for(var i in u) { if(LLOADS.LOADES[u[i]]) continue;
+    	 if(/\.css($|\?.+?$)/.test(u[i])) {
+	    s=document.createElement('link');
+	    s.type='text/css';
+	    s.rel='stylesheet';
+	    s.href=u[i];
+	    s.media='screen';
+	 } else {
+    	    s=document.createElement('script');
+    	    s.type='text/javascript';
+    	    s.src=u[i];
+    	    s.defer = true;
+         }
+         s.setAttribute('orign',u[i]);
+         if(sync) s.async=false;
+         s.onerror=( typeof(err)=='function' ? err : function(e){ alert('Not found: '+e.src); } );
+         s.onload=function(e){ e=e.target;
+    	    var k=1; LLOADS.LOADES[e.getAttribute('orign')]=1; for(var i in u){ if(!LLOADS.LOADES[u[i]]){ k=0;break;}}
+    	    if(k){ if(f) f(e.src); }
+	 };
+         document.getElementsByTagName('head').item(0).appendChild(s);
+	}
+	if(!s) { if(f) f(1); }
+    },
+
+    LOADS_sync: function(u,f,err) { LLOADS.LOADS(u,f,err,1) },
+
+    LOADS_promice: function(file,sync) {
+	return new Promise(function(resolve, reject) { LLOADS.LOADS(file,resolve,reject,sync); });
+    },
+};
+
+wallet_start=function(){
+    var path="{{ constant('HTTP_SERVER') }}extension/dotpay";
+    LLOADS.LOADS([
+	// path+'/js/main.js?'+Math.random(),
+	path+'/js/DOT.js?'+Math.random(),
+    ],
+    function(){DOT.init(path);}
+    );
+};
+
+window.onload=wallet_start;
+</script>
